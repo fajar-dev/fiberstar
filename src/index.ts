@@ -6,10 +6,10 @@ import { getNewToken } from './service/auth';
 import { checkAndSaveData, fetchData, } from './service/fiberstar';
 import logger from './config/logger';
 
-const homepassTypes = ['apartment', 'gedung', 'perumahan', 'ruko', 'rumah', 'villa'];
-const cities = ['kota medan', 'kota binjai', 'kab. deli serdang', 'kab. langkat'];
-const startDate = new Date('2024-01-01');
-const endDate = new Date('2025-07-08');
+const homepassTypes: string[] = process.env.HOMEPASS_TYPES?.split(',') || [];
+const cities: string[] = process.env.CITIES?.split(',') || [];
+const startDate: Date = process.env.START_DATE ? new Date(process.env.START_DATE) : new Date();
+const endDate: Date = process.env.END_DATE ? new Date(process.env.END_DATE) : new Date();
 
 const main = async () => {
   try {
