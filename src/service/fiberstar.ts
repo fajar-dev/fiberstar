@@ -30,18 +30,89 @@ export class HomepassService {
   }
 
   private async count(homepassType: string, city: string): Promise<number> {
-    return this.repository
-      .createQueryBuilder('homepass')
-      .where('homepass.residentType = :homepassType', { homepassType })
-      .andWhere('homepass.city = :city', { city })
-      .getCount()
+    const sql = `
+      SELECT COUNT(*)::int
+      FROM home_pass
+      WHERE resident_type = $1 AND city = $2
+    `
+    const result = await dbConfig.query(sql, [homepassType, city])
+    return result[0].count
   }
 
+  // public async store(data: HomepassRaw[]): Promise<boolean> {
+  //   const entities = data.map((item) => HomepassDto.toEntity(item))
+  //   await this.repository.save(entities)
+  //   return true
+  // }
+
   public async store(data: HomepassRaw[]): Promise<boolean> {
-    const entities = data.map((item) => HomepassDto.toEntity(item))
-    await this.repository.save(entities)
+    if (!data.length) return false
+
+    const sql = `
+      INSERT INTO home_pass (
+        homepass_id, project_id, project_name, region, sub_region,
+        area_name, province, city, district, sub_district,
+        postal_code, homepassed_coordinate, homepass_type, resident_type,
+        resident_name, street_name, no, unit, pop_id,
+        splitter_id, spliter_distribusi_koordinat, rfs_date
+      ) VALUES (
+        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11,
+        $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22
+      )
+      ON CONFLICT (homepass_id) DO UPDATE SET
+        project_id = EXCLUDED.project_id,
+        project_name = EXCLUDED.project_name,
+        region = EXCLUDED.region,
+        sub_region = EXCLUDED.sub_region,
+        area_name = EXCLUDED.area_name,
+        province = EXCLUDED.province,
+        city = EXCLUDED.city,
+        district = EXCLUDED.district,
+        sub_district = EXCLUDED.sub_district,
+        postal_code = EXCLUDED.postal_code,
+        homepassed_coordinate = EXCLUDED.homepassed_coordinate,
+        homepass_type = EXCLUDED.homepass_type,
+        resident_type = EXCLUDED.resident_type,
+        resident_name = EXCLUDED.resident_name,
+        street_name = EXCLUDED.street_name,
+        no = EXCLUDED.no,
+        unit = EXCLUDED.unit,
+        pop_id = EXCLUDED.pop_id,
+        splitter_id = EXCLUDED.splitter_id,
+        spliter_distribusi_koordinat = EXCLUDED.spliter_distribusi_koordinat,
+        rfs_date = EXCLUDED.rfs_date
+    `
+
+    for (const item of data) {
+      await dbConfig.query(sql, [
+        item.homepass_id,
+        item.project_id,
+        item.project_name,
+        item.region,
+        item.sub_region,
+        item.area_name,
+        item.province,
+        item.city,
+        item.district,
+        item.sub_district,
+        item.postal_code,
+        item.homepassed_coordinate,
+        item.homepass_type,
+        item.resident_type,
+        item.resident_name,
+        item.street_name,
+        item.no,
+        item.unit || null,
+        item.pop_id,
+        item.splitter_id,
+        item.spliter_distribusi_koordinat,
+        item.rfs_date
+      ])
+    }
+
     return true
   }
+
 
   public async exist(
     total: number,
