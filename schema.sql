@@ -92,7 +92,7 @@ SET
   homepassed_coordinate_geo = to_point4326(homepassed_coordinate),
   spliter_distribusi_koordinat_geo = to_point4326(spliter_distribusi_koordinat)
 WHERE (homepassed_coordinate IS NOT NULL AND btrim(homepassed_coordinate) <> '')
-   OR (spliter_distribusi_koordinat IS NOT NULL AND btrim(spliter_distribusi_koordinat) <> '');
+  OR (spliter_distribusi_koordinat IS NOT NULL AND btrim(spliter_distribusi_koordinat) <> '');
 
 -- Statistik query planner
 ANALYZE home_pass;
