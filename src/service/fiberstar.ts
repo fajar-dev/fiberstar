@@ -1,11 +1,9 @@
 import axios from 'axios'
 import { dbConfig } from '../config/database'
-// import { HomepassDto } from '../dto/homepass.dto'
 import { HomepassApiResponse, HomepassRaw } from '../interface/homepass.interface'
-import { HomePass } from '../entity/HomePass'
+import { HomepassDto } from '../dto/homepass.dto'
 
 export class HomepassService {
-  // private repository = dbConfig.getRepository(HomePass)
   private apiUrl: string
 
   constructor() {
@@ -38,12 +36,6 @@ export class HomepassService {
     const result = await dbConfig.query(sql, [homepassType, city])
     return result[0].count
   }
-
-  // public async store(data: HomepassRaw[]): Promise<boolean> {
-  //   const entities = data.map((item) => HomepassDto.toEntity(item))
-  //   await this.repository.save(entities)
-  //   return true
-  // }
 
   public async store(data: HomepassRaw[]): Promise<boolean> {
     if (!data.length) return false
@@ -84,32 +76,8 @@ export class HomepassService {
     `
 
     for (const item of data) {
-      await dbConfig.query(sql, [
-        item.homepass_id,
-        item.project_id,
-        item.project_name,
-        item.region,
-        item.sub_region,
-        item.area_name,
-        item.province,
-        item.city,
-        item.district,
-        item.sub_district,
-        item.postal_code,
-        item.homepassed_coordinate,
-        item.homepass_type,
-        item.resident_type,
-        item.resident_name,
-        item.street_name,
-        item.no,
-        item.unit || null,
-        item.pop_id,
-        item.splitter_id,
-        item.spliter_distribusi_koordinat,
-        item.rfs_date
-      ])
+      await dbConfig.query(sql, HomepassDto.toValues(item))
     }
-
     return true
   }
 
