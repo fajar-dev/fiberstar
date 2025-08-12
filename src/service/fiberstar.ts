@@ -6,12 +6,10 @@ import { HomePass } from '../entity/HomePass'
 
 export class HomepassService {
   private repository = dbConfig.getRepository(HomePass)
-  private apiUrl = process.env.API_URL || ''
+  private apiUrl: string
 
   constructor() {
-    if (!this.apiUrl) {
-      throw new Error('API_URL environment variable is not set')
-    }
+    this.apiUrl = process.env.API_URL || ''
   }
 
   public async fetchData(

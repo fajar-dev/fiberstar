@@ -1,4 +1,4 @@
--- Enable PostGIS extension jika belum ada
+-- Enable PostGIS extension
 CREATE EXTENSION IF NOT EXISTS postgis;
 
 -- Buat tabel home_pass

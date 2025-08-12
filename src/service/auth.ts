@@ -11,13 +11,9 @@ export class AuthService {
     this.username = process.env.API_AUTH_USERNAME || '';
     this.password = process.env.API_AUTH_PASSWORD || '';
     this.authUrl = process.env.API_AUTH_URL || '';
-
-    if (!this.username || !this.password || !this.authUrl) {
-      throw new Error('API auth credentials or URL not set in environment variables');
-    }
   }
 
-  public async getNewToken(): Promise<string> {
+  public async generateToken(): Promise<string> {
     const authHeader = Buffer.from(`${this.username}:${this.password}`).toString('base64');
 
     const response = await axios.post(
