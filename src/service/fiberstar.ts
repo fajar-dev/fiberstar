@@ -5,7 +5,7 @@ import { HomepassApiResponse, HomepassRaw } from '../interface/homepass.interfac
 import { HomePass } from '../entity/HomePass'
 
 export class HomepassService {
-  private repository = dbConfig.getRepository(HomePass)
+  // private repository = dbConfig.getRepository(HomePass)
   private apiUrl: string
 
   constructor() {
