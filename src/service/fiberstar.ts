@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { dbConfig } from '../config/database'
-import { HomepassDto } from '../dto/homepass.dto'
+// import { HomepassDto } from '../dto/homepass.dto'
 import { HomepassApiResponse, HomepassRaw } from '../interface/homepass.interface'
 import { HomePass } from '../entity/HomePass'
 
