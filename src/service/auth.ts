@@ -2,22 +2,34 @@ import axios from 'axios';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
-export const getNewToken = async (): Promise<string> => {
-  const username = process.env.API_AUTH_USERNAME;
-  const password = process.env.API_AUTH_PASSWORD;
-  const authUrl = process.env.API_AUTH_URL;
+export class AuthService {
+  private username: string;
+  private password: string;
+  private authUrl: string;
 
-  const authHeader = Buffer.from(`${username}:${password}`).toString('base64');
+  constructor() {
+    this.username = process.env.API_AUTH_USERNAME || '';
+    this.password = process.env.API_AUTH_PASSWORD || '';
+    this.authUrl = process.env.API_AUTH_URL || '';
 
-  const response = await axios.post(
-    authUrl!,
-    {},
-    {
-      headers: {
-        Authorization: `Basic ${authHeader}`,
-      },
+    if (!this.username || !this.password || !this.authUrl) {
+      throw new Error('API auth credentials or URL not set in environment variables');
     }
-  );
+  }
 
-  return response.data.token;
-};
+  public async getNewToken(): Promise<string> {
+    const authHeader = Buffer.from(`${this.username}:${this.password}`).toString('base64');
+
+    const response = await axios.post(
+      this.authUrl,
+      {},
+      {
+        headers: {
+          Authorization: `Basic ${authHeader}`,
+        },
+      }
+    );
+
+    return response.data.token;
+  }
+}
