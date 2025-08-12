@@ -1,0 +1,24 @@
+services:
+  postgres:
+    image: postgis/postgis:17-3.5-alpine
+    container_name: postgres_postgis
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_USER=${DB_USER:-postgres}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-postgres}
+      - POSTGRES_DB=${DB_DATABASE:-postgres}
+    ports:
+      - '6543:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-postgis.sql:/docker-entrypoint-initdb.d/init-postgis.sql:ro
+    networks:
+      - coverage_network
+
+volumes:
+  postgres_data:
+
+networks:
+  coverage_network:
