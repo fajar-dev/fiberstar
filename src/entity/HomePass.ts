@@ -1,116 +1,116 @@
-import { Entity, Column, PrimaryColumn } from 'typeorm';
+import { Entity, Column, PrimaryColumn } from 'typeorm'
 
 @Entity()
 export class HomePass {
   @PrimaryColumn({
     name: "homepass_id",
   })
-  homepassId!: string;
+  homepassId!: string
 
   @Column({
     name: "project_id",
   })
-  projectId!: string; 
+  projectId!: string 
 
   @Column({
     name: "project_name",
   })
-  projectName!: string;
+  projectName!: string
 
   @Column({
     name: "region",
   })
-  region: string;
+  region: string
 
   @Column({
     name: "sub_region",
   })
-  subRegion!: string;
+  subRegion!: string
 
   @Column({
     name: "area_name",
   })
-  areaName!: string;
+  areaName!: string
 
   @Column({
     name: "province",
   })
-  province: string;
+  province: string
 
   @Column({
     name: "city",
   })
-  city: string;
+  city: string
 
   @Column({
     name: "district",
   })
-  district: string;
+  district: string
 
   @Column({
     name: "sub_district",
   })
-  subDistrict!: string;
+  subDistrict!: string
 
   @Column({
     name: "postal_code",
   })
-  postalCode!: number;
+  postalCode!: number
 
   @Column({
     name: "homepassed_coordinate",
   })
-  homepassedCoordinate!: string;
+  homepassedCoordinate!: string
 
   @Column({
     name: "homepass_type",
   })
-  homepassType!: string;
+  homepassType!: string
 
   @Column({
     name: "resident_type",
   })
-  residentType!: string;
+  residentType!: string
 
   @Column({
     name: "resident_name",
   })
-  residentName!: string;
+  residentName!: string
 
   @Column({
     name: "street_name",
   })
-  streetName!: string;
+  streetName!: string
 
   @Column({
     name: "no",
   })
-  no: string;
+  no: string
 
   @Column({
     name: "unit",
     nullable: true,
   })
-  unit: string;
+  unit: string
 
   @Column({
     name: "pop_id",
   })
-  popId: string;
+  popId: string
 
   @Column({
     name: "splitter_id",
   })
-  splitterId: string;
+  splitterId: string
 
   @Column({
     name: "spliter_distribusi_koordinat",
   })
-  spliterDistribusiKoordinat: string;
+  spliterDistribusiKoordinat: string
 
   @Column({
     name: "rfs_date",
   })
-  rfsDate: string;
+  rfsDate: string
 }
 

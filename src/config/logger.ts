@@ -1,13 +1,13 @@
-import { createLogger, transports, format } from 'winston';
-import 'winston-daily-rotate-file';
-import * as dotenv from 'dotenv';
-import { existsSync, mkdirSync } from 'fs';
-dotenv.config();
+import { createLogger, transports, format } from 'winston'
+import 'winston-daily-rotate-file'
+import * as dotenv from 'dotenv'
+import { existsSync, mkdirSync } from 'fs'
+dotenv.config()
 
 const logDir = process.env.LOG_DIR
 
 if (!existsSync(logDir)) {
-  mkdirSync(logDir, { recursive: true });
+  mkdirSync(logDir, { recursive: true })
 }
 
 const logger = createLogger({
@@ -15,7 +15,7 @@ const logger = createLogger({
   format: format.combine(
     format.timestamp(),
     format.printf(({ timestamp, level, message }) => {
-      return `[${timestamp}] ${level}: ${message}`;
+      return `[${timestamp}] ${level}: ${message}`
     })
   ),
   transports: [
@@ -37,6 +37,6 @@ const logger = createLogger({
       format: format.simple(),
     }),
   ],
-});
+})
 
-export default logger;
+export default logger

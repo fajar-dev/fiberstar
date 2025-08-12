@@ -18,11 +18,11 @@ export class HomepassCrawler {
   constructor() {
     this.authService = new AuthService()
     this.homepassService = new HomepassService()
-    this.homepassTypes = process.env.HOMEPASS_TYPES?.split(',') || []
-    this.cities = process.env.CITIES?.split(',') || []
-    this.startDate = process.env.START_DATE ? new Date(process.env.START_DATE) : new Date()
-    this.endDate = process.env.END_DATE ? new Date(process.env.END_DATE) : new Date()
-    this.token = process.env.API_TOKEN || ''
+    this.homepassTypes = process.env.HOMEPASS_TYPES?.split(',')
+    this.cities = process.env.CITIES?.split(',')
+    this.startDate = new Date(process.env.START_DATE)
+    this.endDate = new Date(process.env.END_DATE)
+    this.token = process.env.API_TOKEN
   }
 
   private async regenerateToken() {

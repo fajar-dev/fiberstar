@@ -1,8 +1,8 @@
-import "reflect-metadata"
-import { DataSource } from "typeorm"
-import { HomePass } from "../entity/HomePass"
-import * as dotenv from 'dotenv';
-dotenv.config();
+import 'reflect-metadata'
+import { DataSource } from 'typeorm'
+import { HomePass } from '../entity/HomePass'
+import * as dotenv from 'dotenv'
+dotenv.config()
 
 export const dbConfig = new DataSource({
     type: "postgres",

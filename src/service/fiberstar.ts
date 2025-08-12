@@ -7,7 +7,7 @@ export class HomepassService {
   private apiUrl: string
 
   constructor() {
-    this.apiUrl = process.env.API_URL || ''
+    this.apiUrl = process.env.API_URL
   }
 
   public async fetchData(
