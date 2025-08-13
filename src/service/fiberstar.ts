@@ -27,13 +27,13 @@ export class HomepassService {
     return response.data
   }
 
-  private async count(homepassType: string, city: string): Promise<number> {
+  private async count(homepassType: string, city: string, date: string): Promise<number> {
     const sql = `
       SELECT COUNT(*)::int
       FROM home_pass
-      WHERE resident_type = $1 AND city = $2
+      WHERE resident_type = $1 AND city = $2 AND rfs_date = $3
     `
-    const result = await dbConfig.query(sql, [homepassType, city])
+    const result = await dbConfig.query(sql, [homepassType, city, date])
     return result[0].count
   }
 
@@ -84,10 +84,14 @@ export class HomepassService {
 
   public async exist(
     total: number,
+    date: string,
     homepassType: string,
-    city: string
+    city: string,
   ): Promise<boolean> {
-    const existingDataCount = await this.count(homepassType, city)
+    const existingDataCount = await this.count(homepassType, city, date)
+    console.log(date)
+    console.log(existingDataCount)
+    console.log(total)
     if (total === existingDataCount) {
       return true
     }

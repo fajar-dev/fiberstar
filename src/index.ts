@@ -66,6 +66,8 @@ export class HomepassCrawler {
   private async processType(dateStr: string, city: string, type: string) {
     let page = 1
     let totalPages = 1
+    let retryCount = 0;
+    const MAX_RETRIES = 16;
 
     while (page <= totalPages) {
       try {
@@ -85,7 +87,7 @@ export class HomepassCrawler {
           break
         }
 
-        const exists = await this.homepassService.exist(result.message.total, type, city)
+        const exists = await this.homepassService.exist(result.message.total, dateStr, type, city)
         if (exists) {
           logger.info(`⏩ ${dateStr} | ${city} | ${type} | Skip`)
           break
@@ -94,6 +96,7 @@ export class HomepassCrawler {
         await this.homepassService.store(result.message.data)
         logger.info(`✅ ${dateStr} | ${city} | ${type} | page ${page} | Store`)
         page++
+        retryCount = 0
       } catch (err: any) {
         if (err.response?.status === 401) {
           logger.info('🔐 Token expired. Regenerating...')
@@ -102,7 +105,10 @@ export class HomepassCrawler {
           logger.error(
             `❌ Error on page ${page} for ${type} | ${city} | ${dateStr}: ${err.message}`
           )
-          page++
+          retryCount++
+          if (retryCount >= MAX_RETRIES) {
+            break
+          }
         }
       }
     }
