@@ -66,8 +66,8 @@ export class HomepassCrawler {
   private async processType(dateStr: string, city: string, type: string) {
     let page = 1
     let totalPages = 1
-    let retryCount = 0;
-    const MAX_RETRIES = 16;
+    let retryCount = 0
+    const MAX_RETRIES = 16
 
     while (page <= totalPages) {
       try {
