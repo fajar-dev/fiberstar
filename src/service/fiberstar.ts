@@ -28,12 +28,23 @@ export class HomepassService {
   }
 
   private async count(homepassType: string, city: string, date: string): Promise<number> {
+    const formatTitleCase = (text: string) =>
+      text
+        .trim()
+        .toLowerCase()
+        .replace(/\b\w/g, char => char.toUpperCase())
+    const formattedDate = new Date(date.trim())
+
     const sql = `
       SELECT COUNT(*)::int
       FROM home_pass
       WHERE resident_type = $1 AND city = $2 AND rfs_date = $3
     `
-    const result = await dbConfig.query(sql, [homepassType, city, date])
+    const result = await dbConfig.query(sql, [
+      formatTitleCase(homepassType),
+      formatTitleCase(city),
+      formattedDate
+    ])
     return result[0].count
   }
 
