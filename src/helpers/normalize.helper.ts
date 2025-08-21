@@ -1,7 +1,6 @@
 
 /**
  * Ubah "null" (string) menjadi null (tipe null asli).
- * Juga bisa dipakai bareng sanitizer lain.
  */
 export function normalizeNull(value: any): any {
   if (value === undefined || value === null) return null
