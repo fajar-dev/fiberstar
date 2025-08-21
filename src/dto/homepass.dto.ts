@@ -1,31 +1,32 @@
 import { HomepassRaw } from '../interface/homepass.interface'
 import { sanitizeString } from '../helpers/sanitize.helper'
+import { normalizeNull } from '../helpers/normalize.helper'
 
 export class HomepassDto {
   static toValues(item: HomepassRaw): any[] {
     return [
-      item.homepass_id,
-      item.project_id,
-      sanitizeString(item.project_name),
-      sanitizeString(item.region),
-      sanitizeString(item.sub_region),
-      sanitizeString(item.area_name),
-      sanitizeString(item.province),
-      sanitizeString(item.city),
-      sanitizeString(item.district),
-      sanitizeString(item.sub_district),
-      item.postal_code,
-      sanitizeString(item.homepassed_coordinate),
-      sanitizeString(item.homepass_type),
-      sanitizeString(item.resident_type),
-      sanitizeString(item.resident_name),
-      sanitizeString(item.street_name),
-      sanitizeString(item.no),
-      sanitizeString(item.unit),
-      item.pop_id,
-      item.splitter_id,
-      sanitizeString(item.spliter_distribusi_koordinat),
-      item.rfs_date
+      sanitizeString(normalizeNull(item.homepass_id)),
+      sanitizeString(normalizeNull(item.project_id)),
+      sanitizeString(normalizeNull(item.project_name)),
+      sanitizeString(normalizeNull(item.region)),
+      sanitizeString(normalizeNull(item.sub_region)),
+      sanitizeString(normalizeNull(item.area_name)),
+      sanitizeString(normalizeNull(item.province)),
+      sanitizeString(normalizeNull(item.city)),
+      sanitizeString(normalizeNull(item.district)),
+      sanitizeString(normalizeNull(item.sub_district)),
+      normalizeNull(item.postal_code),
+      sanitizeString(normalizeNull(item.homepassed_coordinate)),
+      sanitizeString(normalizeNull(item.homepass_type)),
+      sanitizeString(normalizeNull(item.resident_type)),
+      sanitizeString(normalizeNull(item.resident_name)),
+      sanitizeString(normalizeNull(item.street_name)),
+      sanitizeString(normalizeNull(item.no)),
+      sanitizeString(normalizeNull(item.unit)),
+      sanitizeString(normalizeNull(item.pop_id)),
+      sanitizeString(normalizeNull(item.splitter_id)),
+      sanitizeString(normalizeNull(item.spliter_distribusi_koordinat)),
+      sanitizeString(normalizeNull(item.rfs_date)),
     ]
   }
 }
