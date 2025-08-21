@@ -20,7 +20,7 @@ export class HomepassDto {
       sanitizeString(item.resident_type),
       sanitizeString(item.resident_name),
       sanitizeString(item.street_name),
-      sanitizeString(item.no),   // ✅ sudah pakai helper
+      sanitizeString(item.no),
       sanitizeString(item.unit),
       item.pop_id,
       item.splitter_id,
