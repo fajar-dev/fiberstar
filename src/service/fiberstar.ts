@@ -7,7 +7,7 @@ export class HomepassService {
   private apiUrl: string
 
   constructor() {
-    this.apiUrl = process.env.API_URL
+    this.apiUrl = process.env.API_URL || ''
   }
 
   public async fetchData(
@@ -32,20 +32,21 @@ export class HomepassService {
       text
         .trim()
         .toLowerCase()
-        .replace(/\b\w/g, char => char.toUpperCase())
-    const formattedDate = new Date(date.trim())
+        .replace(/\b\w/g, (char) => char.toUpperCase())
 
     const sql = `
-      SELECT COUNT(*)::int
+      SELECT COUNT(*) as count
       FROM home_pass
-      WHERE resident_type = $1 AND city = $2 AND rfs_date = $3
+      WHERE resident_type = ? AND city = ? AND rfs_date = ?
     `
-    const result = await dbConfig.query(sql, [
+
+    const [rows]: any = await dbConfig.query(sql, [
       formatTitleCase(homepassType),
       formatTitleCase(city),
-      formattedDate
+      date
     ])
-    return result[0].count
+
+    return Number(rows.count)
   }
 
   public async store(data: HomepassRaw[]): Promise<boolean> {
@@ -59,53 +60,49 @@ export class HomepassService {
         resident_name, street_name, no, unit, pop_id,
         splitter_id, spliter_distribusi_koordinat, rfs_date
       ) VALUES (
-        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11,
-        $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22
+        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
       )
-      ON CONFLICT (homepass_id) DO UPDATE SET
-        project_id = EXCLUDED.project_id,
-        project_name = EXCLUDED.project_name,
-        region = EXCLUDED.region,
-        sub_region = EXCLUDED.sub_region,
-        area_name = EXCLUDED.area_name,
-        province = EXCLUDED.province,
-        city = EXCLUDED.city,
-        district = EXCLUDED.district,
-        sub_district = EXCLUDED.sub_district,
-        postal_code = EXCLUDED.postal_code,
-        homepassed_coordinate = EXCLUDED.homepassed_coordinate,
-        homepass_type = EXCLUDED.homepass_type,
-        resident_type = EXCLUDED.resident_type,
-        resident_name = EXCLUDED.resident_name,
-        street_name = EXCLUDED.street_name,
-        no = EXCLUDED.no,
-        unit = EXCLUDED.unit,
-        pop_id = EXCLUDED.pop_id,
-        splitter_id = EXCLUDED.splitter_id,
-        spliter_distribusi_koordinat = EXCLUDED.spliter_distribusi_koordinat,
-        rfs_date = EXCLUDED.rfs_date
+      ON DUPLICATE KEY UPDATE
+        project_id = VALUES(project_id),
+        project_name = VALUES(project_name),
+        region = VALUES(region),
+        sub_region = VALUES(sub_region),
+        area_name = VALUES(area_name),
+        province = VALUES(province),
+        city = VALUES(city),
+        district = VALUES(district),
+        sub_district = VALUES(sub_district),
+        postal_code = VALUES(postal_code),
+        homepassed_coordinate = VALUES(homepassed_coordinate),
+        homepass_type = VALUES(homepass_type),
+        resident_type = VALUES(resident_type),
+        resident_name = VALUES(resident_name),
+        street_name = VALUES(street_name),
+        no = VALUES(no),
+        unit = VALUES(unit),
+        pop_id = VALUES(pop_id),
+        splitter_id = VALUES(splitter_id),
+        spliter_distribusi_koordinat = VALUES(spliter_distribusi_koordinat),
+        rfs_date = VALUES(rfs_date)
     `
 
     for (const item of data) {
       await dbConfig.query(sql, HomepassDto.toValues(item))
     }
+
     return true
   }
-
 
   public async exist(
     total: number,
     date: string,
     homepassType: string,
-    city: string,
+    city: string
   ): Promise<boolean> {
     const existingDataCount = await this.count(homepassType, city, date)
-    // console.log(date)
-    // console.log(existingDataCount)
-    // console.log(total)
-    if (total === existingDataCount) {
-      return true
-    }
-    return false
+    console.log(existingDataCount)
+    console.log(total)
+    return total === existingDataCount
   }
 }
