@@ -1,30 +1,32 @@
-import { HomepassRaw } from "../interface/homepass.interface";
+import { HomepassRaw } from '../interface/homepass.interface'
+import { sanitizeString } from '../helpers/sanitize.helper'
+import { normalizeNull } from '../helpers/normalize.helper'
 
 export class HomepassDto {
   static toValues(item: HomepassRaw): any[] {
     return [
-      item.homepass_id,
-      item.project_id,
-      item.project_name,
-      item.region,
-      item.sub_region,
-      item.area_name,
-      item.province,
-      item.city,
-      item.district,
-      item.sub_district,
-      item.postal_code,
-      item.homepassed_coordinate,
-      item.homepass_type,
-      item.resident_type,
-      item.resident_name,
-      item.street_name,
-      item.no,
-      item.unit || null,
-      item.pop_id,
-      item.splitter_id,
-      item.spliter_distribusi_koordinat,
-      item.rfs_date
+      sanitizeString(normalizeNull(item.homepass_id)),
+      sanitizeString(normalizeNull(item.project_id)),
+      sanitizeString(normalizeNull(item.project_name)),
+      sanitizeString(normalizeNull(item.region)),
+      sanitizeString(normalizeNull(item.sub_region)),
+      sanitizeString(normalizeNull(item.area_name)),
+      sanitizeString(normalizeNull(item.province)),
+      sanitizeString(normalizeNull(item.city)),
+      sanitizeString(normalizeNull(item.district)),
+      sanitizeString(normalizeNull(item.sub_district)),
+      normalizeNull(item.postal_code),
+      sanitizeString(normalizeNull(item.homepassed_coordinate)),
+      sanitizeString(normalizeNull(item.homepass_type)),
+      sanitizeString(normalizeNull(item.resident_type)),
+      sanitizeString(normalizeNull(item.resident_name)),
+      sanitizeString(normalizeNull(item.street_name)),
+      sanitizeString(normalizeNull(item.no)),
+      sanitizeString(normalizeNull(item.unit)),
+      sanitizeString(normalizeNull(item.pop_id)),
+      sanitizeString(normalizeNull(item.splitter_id)),
+      sanitizeString(normalizeNull(item.spliter_distribusi_koordinat)),
+      sanitizeString(normalizeNull(item.rfs_date)),
     ]
   }
 }
