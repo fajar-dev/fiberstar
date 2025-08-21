@@ -1,29 +1,30 @@
-import { HomepassRaw } from "../interface/homepass.interface";
+import { HomepassRaw } from '../interface/homepass.interface'
+import { sanitizeString } from '../helpers/sanitize.helper'
 
 export class HomepassDto {
   static toValues(item: HomepassRaw): any[] {
     return [
       item.homepass_id,
       item.project_id,
-      item.project_name,
-      item.region,
-      item.sub_region,
-      item.area_name,
-      item.province,
-      item.city,
-      item.district,
-      item.sub_district,
+      sanitizeString(item.project_name),
+      sanitizeString(item.region),
+      sanitizeString(item.sub_region),
+      sanitizeString(item.area_name),
+      sanitizeString(item.province),
+      sanitizeString(item.city),
+      sanitizeString(item.district),
+      sanitizeString(item.sub_district),
       item.postal_code,
-      item.homepassed_coordinate,
-      item.homepass_type,
-      item.resident_type,
-      item.resident_name,
-      item.street_name,
-      item.no,
-      item.unit || null,
+      sanitizeString(item.homepassed_coordinate),
+      sanitizeString(item.homepass_type),
+      sanitizeString(item.resident_type),
+      sanitizeString(item.resident_name),
+      sanitizeString(item.street_name),
+      sanitizeString(item.no),   // ✅ sudah pakai helper
+      sanitizeString(item.unit),
       item.pop_id,
       item.splitter_id,
-      item.spliter_distribusi_koordinat,
+      sanitizeString(item.spliter_distribusi_koordinat),
       item.rfs_date
     ]
   }
