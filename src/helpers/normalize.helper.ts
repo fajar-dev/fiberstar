@@ -1,19 +1,16 @@
-
 /**
- * Ubah "null" (string) menjadi null (tipe null asli).
+ * Ubah "null" (string), "undefined", atau string kosong menjadi null.
  */
 export function normalizeNull(value: any): any {
   if (value === undefined || value === null) return null
 
   if (typeof value === 'string') {
-    const trimmed = value.trim().toLowerCase()
-    if (trimmed === 'null' || trimmed === '' || trimmed === 'undefined') {
+    const trimmed = value.trim()
+    if (trimmed === '' || /^null$/i.test(trimmed) || /^undefined$/i.test(trimmed)) {
       return null
     }
-    return value
+    return trimmed
   }
 
   return value
 }
-
-
