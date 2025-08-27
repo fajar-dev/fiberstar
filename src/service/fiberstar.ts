@@ -48,6 +48,8 @@ export class HomepassService {
     ])
 
       return result[0].count
+      
+      // return formatTitleCase(city)
 
   }
 
@@ -103,6 +105,8 @@ export class HomepassService {
     city: string
   ): Promise<boolean> {
     const existingDataCount = await this.count(homepassType, city, date)
+    // console.log(existingDataCount)
+    // console.log(total)
     return total === existingDataCount
   }
 }
