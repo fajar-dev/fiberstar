@@ -28,30 +28,21 @@ export class HomepassService {
   }
 
   private async count(homepassType: string, city: string, date: string): Promise<number> {
-    const formatTitleCase = (text: string) =>
-      text
-        .trim()
-        .toLowerCase()
-        .replace(/\b\w/g, (char) => char.toUpperCase())
+  const sql = `
+    SELECT COUNT(*)::int
+    FROM home_pass
+    WHERE TRIM(UPPER(resident_type)) = TRIM(UPPER($1))
+      AND TRIM(UPPER(city)) = TRIM(UPPER($2))
+      AND rfs_date = $3
+  `
 
-    const sql = `
-      SELECT COUNT(*)::int
-      FROM home_pass
-      WHERE resident_type = $1 AND city = $2 AND rfs_date = $3
-
-    `
-
-    const result = await dbConfig.query(sql, [
-      formatTitleCase(homepassType),
-      formatTitleCase(city),
-      date
-    ])
-
-      return result[0].count
-      
-      // return formatTitleCase(city)
-
-  }
+  const result = await dbConfig.query(sql, [
+    homepassType.trim().toUpperCase(),
+    city.trim().toUpperCase(),
+    date
+  ])
+  return result[0].count
+}
 
   public async store(data: HomepassRaw[]): Promise<boolean> {
     if (!data.length) return false
@@ -105,8 +96,6 @@ export class HomepassService {
     city: string
   ): Promise<boolean> {
     const existingDataCount = await this.count(homepassType, city, date)
-    // console.log(existingDataCount)
-    // console.log(total)
     return total === existingDataCount
   }
 }
