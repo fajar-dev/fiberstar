@@ -28,21 +28,37 @@ export class HomepassService {
   }
 
   private async count(homepassType: string, city: string, date: string): Promise<number> {
+    const sql = `
+      SELECT COUNT(*)::int
+      FROM home_pass
+      WHERE TRIM(UPPER(resident_type)) = TRIM(UPPER($1))
+        AND TRIM(UPPER(city)) = TRIM(UPPER($2))
+        AND rfs_date = $3
+    `
+
+    const result = await dbConfig.query(sql, [
+      homepassType.trim().toUpperCase(),
+      city.trim().toUpperCase(),
+      date
+    ])
+    return result[0].count
+  }
+
+  public async delete(homepassType: string, city: string, date: string): Promise<void> {
   const sql = `
-    SELECT COUNT(*)::int
-    FROM home_pass
+    DELETE FROM home_pass
     WHERE TRIM(UPPER(resident_type)) = TRIM(UPPER($1))
       AND TRIM(UPPER(city)) = TRIM(UPPER($2))
       AND rfs_date = $3
-  `
+  `;
 
-  const result = await dbConfig.query(sql, [
+  await dbConfig.query(sql, [
     homepassType.trim().toUpperCase(),
     city.trim().toUpperCase(),
     date
-  ])
-  return result[0].count
+  ]);
 }
+
 
   public async store(data: HomepassRaw[]): Promise<boolean> {
     if (!data.length) return false

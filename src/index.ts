@@ -91,6 +91,8 @@ export class HomepassCrawler {
         if (exists) {
           logger.info(`⏩ ${dateStr} | ${city} | ${type} | Skip`)
           break
+        }else{
+          await this.homepassService.delete(type, city, dateStr)
         }
 
         await this.homepassService.store(result.message.data)
